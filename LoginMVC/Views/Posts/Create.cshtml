@@ -1,0 +1,20 @@
+﻿@model LoginMVC.Models.Post
+
+<h2>게시글 작성</h2>
+
+<form asp-action="Create" enctype="multipart/form-data" method="post">
+	<div class="mb-2">
+		<input asp-for="Title" class="form-control" placeholder="제목" required />
+	</div>
+
+	<div class="mb-2">
+		<textarea asp-for="Content" class="form-control" rows="5" placeholder="내용" required></textarea>
+	</div>
+
+	<div class="mb-2">
+		<label>첨부파일</label>
+		<input type="file" name="files" multiple class="form-control" />
+	</div>
+
+	<button type="submit" class="btn btn-primary mt-2">작성 완료</button>
+</form>

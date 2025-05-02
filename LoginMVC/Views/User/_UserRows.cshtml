@@ -1,0 +1,14 @@
+﻿@model List<Microsoft.Graph.Models.User>
+
+@foreach (var user in Model)
+{
+	<tr>
+		<td>
+			<a href="#" class="user-detail" data-user-id="@user.Id">
+				@user.DisplayName
+			</a>
+		</td>
+		<td>@user.JobTitle</td>
+		<td>@user.Mail</td>
+	</tr>
+}

@@ -1,0 +1,18 @@
+﻿@model Microsoft.Graph.Models.User
+
+<div class="resume-row">
+	<span class="resume-label">이름 :</span>
+	<span class="resume-value">@Model.DisplayName?.Split('/').First()</span>
+</div>
+<div class="resume-row">
+	<span class="resume-label">직급 :</span>
+	<span class="resume-value">@Model.JobTitle</span>
+</div>
+<div class="resume-row">
+	<span class="resume-label">부서 :</span>
+	<span class="resume-value">@Model.Department</span>
+</div>
+<div class="resume-row">
+	<span class="resume-label">이메일 :</span>
+	<span class="resume-value">@Model.Mail</span>
+</div>

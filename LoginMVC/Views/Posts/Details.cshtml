@@ -1,0 +1,80 @@
+﻿@model LoginMVC.Models.Post
+
+@{
+    ViewBag.Title = "게시글 상세보기";
+}
+
+<div class="container my-4">
+    <h2>@Model.Title</h2>
+    <div class="text-muted mb-3">작성일: @Model.Created?.ToString("yyyy-MM-dd HH:mm")</div>
+
+    <p class="lead">@Model.Content</p>
+
+    <hr />
+
+    <h4>📎 첨부파일</h4>
+    @if (ViewBag.Attachments != null && ((List<Attachment>)ViewBag.Attachments).Count > 0)
+    {
+	    <ul class="list-group mb-3">
+		    @foreach (var file in ViewBag.Attachments)
+		    {
+			    <li class="list-group-item">
+				    <a href="@file.FilePath" download>@file.OriginalFileName</a>
+			    </li>
+		    }
+	    </ul>
+    }
+    else
+    {
+	    <p class="text-muted">첨부파일 없음</p>
+    }
+
+
+    <h4>💬 댓글</h4>
+    @if (ViewBag.Comments != null && ViewBag.Comments.Count > 0)
+    {
+        @foreach (var comment in ViewBag.Comments)
+        {
+            <div class="border rounded p-3 mb-2">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <strong>@comment.Author</strong>
+                        <small class="text-muted">(@comment.CreatedAt.ToString("yyyy-MM-dd HH:mm"))</small>
+                    </div>
+                    <form asp-action="DeleteComment" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@comment.Id" />
+                        <input type="hidden" name="postId" value="@Model.Id" />
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('댓글을 삭제하시겠습니까?')">삭제</button>
+                    </form>
+                </div>
+                <p class="mt-2">@comment.Content</p>
+            </div>
+        }
+    }
+    else
+    {
+        <p class="text-muted">댓글이 없습니다.</p>
+    }
+
+    <hr />
+
+    <h5>✏️ 댓글 작성</h5>
+    <form asp-action="AddComment" method="post">
+        <input type="hidden" name="PostId" value="@Model.Id" />
+        <div class="mb-2">
+            <input name="Author" class="form-control" placeholder="작성자" required />
+        </div>
+        <div class="mb-2">
+            <textarea name="Content" class="form-control" rows="3" placeholder="댓글 내용" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">댓글 작성</button>
+    </form>
+
+    <hr />
+
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">게시글 수정</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">게시글 삭제</a>
+        <a asp-action="Index" class="btn btn-secondary">목록으로</a>
+    </div>
+</div>

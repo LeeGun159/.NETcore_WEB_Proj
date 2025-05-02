@@ -1,0 +1,167 @@
+﻿@using LoginMVC.Models               <!-- LoginUserEx가 정의된 네임스페이스 -->
+@using Microsoft.AspNetCore.Identity <!-- UserManager, SignInManager를 위해 -->
+@inject UserManager<LoginUserEx> UserManager
+@inject SignInManager<LoginUserEx> SignInManager
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description">
+    <meta content="Coderthemes" name="author">
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/images/favicon.ico">
+    <!-- Daterangepicker css -->
+    <link rel="stylesheet" href="~/vendor/daterangepicker/daterangepicker.css">
+    <!-- Vector Map css -->
+    <link rel="stylesheet" href="~/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css">
+    <!-- Theme Config Js -->
+    <script src="~/js/hyper-config.js"></script>
+    <!-- App css -->
+    <link href="~/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css">
+    <link href="~/vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet" type="text/css">
+    <link href="~/css/app-saas.min.css" rel="stylesheet" type="text/css" id="app-style">
+    <!-- Icons css -->
+    <link href="~/css/icons.min.css" rel="stylesheet" type="text/css">
+    <!-- 추가 -->
+    <link rel="stylesheet" href="~/Neoplus.NetCoreSample.WebSite.styles.css" asp-append-version="true" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" type="text/css">
+    <link href="~/css/site.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="~/css/default-ocean-blue.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <div id="form1">
+        <div style="display:none"></div>
+        <!-- Begin page -->
+        <div class="wrapper">
+            <!-- ========== Topbar Start ========== -->
+            <div class="navbar-custom">
+                <div class="topbar container-fluid">
+                    <div class="d-flex align-items-center gap-lg-2 gap-1">
+                        <!-- Topbar Brand Logo -->
+                        <div class="logo-topbar">
+                            <!-- Logo light -->
+                            <a href="/" class="logo-light">
+                                <span class="logo-lg">
+                                    <img src="~/images/logo.png" alt="logo">
+                                </span>
+                                <span class="logo-sm">
+                                    <img src="~/images/logo-sm.png" alt="small logo">
+                                </span>
+                            </a>
+                            <!-- Logo Dark -->
+                            <a href="/" class="logo-dark">
+                                <span class="logo-lg">
+                                    <img src="~/images/logo-dark.png" alt="dark logo">
+                                </span>
+                                <span class="logo-sm">
+                                    <img src="~/images/logo-dark-sm.png" alt="small logo">
+                                </span>
+                            </a>
+                        </div>
+                        <!-- Sidebar Menu Toggle Button -->
+                        <button class="button-toggle-menu" onclick="return false;">
+                            <i class="mdi mdi-menu"></i>
+                        </button>
+                        <!-- Horizontal Menu Toggle Button -->
+                        <button class="navbar-toggle" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
+                            <div class="lines">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </button>
+                        <!-- Topbar Search Form -->
+                    </div>
+                    <partial name="_TopbarPartial" />
+                </div>
+            </div>
+            <!-- ========== Topbar End ========== -->
+            <!-- ========== Left Sidebar Start ========== -->
+            <div class="leftside-menu">
+                <!-- Brand Logo Light -->
+                <a href="/" class="logo logo-light">
+                    <span class="logo-lg">
+                        <img src="~/images/logo.png" alt="logo">
+                    </span>
+                    <span class="logo-sm">
+                        <img src="~/images/logo-sm.png" alt="small logo">
+                    </span>
+                </a>
+                <!-- Brand Logo Dark -->
+                <a href="/" class="logo logo-dark">
+                    <span class="logo-lg">
+                        <img src="~/images/logo-dark.png" alt="dark logo">
+                    </span>
+                    <span class="logo-sm">
+                        <img src="~/images/logo-dark-sm.png" alt="small logo">
+                    </span>
+                </a>
+                <!-- Sidebar Hover Menu Toggle Button -->
+                <div class="button-sm-hover" data-bs-toggle="tooltip" data-bs-placement="right" title="Show Full Sidebar">
+                    <i class="ri-checkbox-blank-circle-line align-middle"></i>
+                </div>
+                <!-- Full Sidebar Menu Close Button -->
+                <div class="button-close-fullsidebar">
+                    <i class="ri-close-fill align-middle"></i>
+                </div>
+                <!-- Sidebar -left -->
+                <partial name="_SidebarPartial" />
+            </div>
+            <!-- ========== Left Sidebar End ========== -->
+            <div class="content-page">
+                <!-- ========== MainContentPlaceHolder Start ========== -->
+                <div class="content">
+                    @RenderBody()
+                </div>
+                <!-- ========== MainContentPlaceHolder End ========== -->
+                <!-- ========== FooterContentPlaceHolder Start ========== -->
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <script>document.write(new Date().getFullYear())</script> Copyright ⓒ NEOPLUS. All rights reserved.
+                            </div>
+                            <div class="col-md-8">
+                                <div class="text-md-end d-none d-md-block">
+                                    Keep your eyes on the stars, and your feet on the ground
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <!-- ========== FooterContentPlaceHolder End ========== -->
+            </div>
+        </div>
+        <!-- End page -->
+        <!-- ========== FooterScript Start ========== -->
+        <!-- Vendor js -->
+        <script src="~/js/vendor.min.js"></script>
+        <!-- Daterangepicker js -->
+        <script src="~/vendor/daterangepicker/moment.min.js"></script>
+        <script src="~/vendor/daterangepicker/daterangepicker.js"></script>
+        <!-- Apex Charts js -->
+        <script src="~/vendor/apexcharts/apexcharts.min.js"></script>
+        <!-- Vector Map js -->
+        <script src="~/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js"></script>
+        <script src="~/vendor/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
+        <!-- Dashboard App js -->
+        <script src="~/js/pages/demo.dashboard.js"></script>
+        <!-- App js -->
+        <script src="~/js/app.min.js"></script>
+        <!-- 추가 -->
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/kendo/kendo.all.min.js"></script>
+        <!-- jstree css -->
+        <link href="~/vendor/jstree/themes/default/style.min.css" rel="stylesheet" type="text/css">
+        <!-- jstree js -->
+        <script src="~/vendor/jstree/jstree.min.js"></script>
+        <script src="~/js/pages/demo.jstree.js"></script>
+        @await RenderSectionAsync("Scripts", required: false)
+        <!-- ========== FooterScript End ========== -->
+    </div>
+</body>
+</html>

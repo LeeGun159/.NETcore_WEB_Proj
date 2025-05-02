@@ -1,0 +1,50 @@
+﻿@model IEnumerable<LoginMVC.Models.Post>
+
+<h2 class="mb-3">📋 게시글 목록</h2>
+
+<form class="d-flex mb-3" method="get">
+	<input type="text" name="keyword" class="form-control me-2" value="@ViewBag.Keyword" placeholder="제목 검색..." />
+	<button type="submit" class="btn btn-outline-primary">검색</button>
+</form>
+
+<a href="/Posts/Create" class="btn btn-primary mb-3">➕ 새 글쓰기</a>
+
+<table class="table table-bordered">
+	<thead class="table-light text-center">
+	<tr>
+		<th>제목</th>
+		<th>작성자</th>
+		<th>작성일</th>
+		<th>관리</th>
+	</tr>
+	</thead>
+	<tbody>
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>@item.Title</td>
+			<td>@item.CreatorId</td>
+			<td>@item.Created?.ToString("yyyy-MM-dd")</td>
+			<td class="text-center">
+				<a href="/Posts/Details/@item.Id" class="btn btn-sm btn-info">보기</a>
+				<a href="/Posts/Edit/@item.Id" class="btn btn-sm btn-warning">수정</a>
+				<a href="/Posts/Delete/@item.Id" class="btn btn-sm btn-danger">삭제</a>
+			</td>
+		</tr>
+	}
+	</tbody>
+</table>
+
+@if ((int)ViewBag.TotalPages > 1)
+{
+	<nav>
+		<ul class="pagination justify-content-center">
+			@for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+			{
+				<li class="page-item @(i == (int)ViewBag.CurrentPage ? "active" : "")">
+					<a class="page-link" href="?page=@i&keyword=@ViewBag.Keyword">@i</a>
+				</li>
+			}
+		</ul>
+	</nav>
+}

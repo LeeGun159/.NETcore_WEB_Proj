@@ -1,0 +1,49 @@
+﻿@model Order
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">📝 주문 등록</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div class="mb-3">
+                            <label asp-for="OrderDate" class="form-label"></label>
+                            <input asp-for="OrderDate" type="date" class="form-control" />
+                            <span asp-validation-for="OrderDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ShipName" class="form-label"></label>
+                            <input asp-for="ShipName" class="form-control" />
+                            <span asp-validation-for="ShipName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ShipAddress" class="form-label"></label>
+                            <input asp-for="ShipAddress" class="form-control" />
+                            <span asp-validation-for="ShipAddress" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Freight" class="form-label"></label>
+                            <input asp-for="Freight" class="form-control" />
+                            <span asp-validation-for="Freight" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-success">저장</button>
+                            <a asp-action="Index" class="btn btn-secondary">목록으로</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

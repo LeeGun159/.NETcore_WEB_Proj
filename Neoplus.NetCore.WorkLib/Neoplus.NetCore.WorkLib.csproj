@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <!-- EF Core SQL Server (DB) -->
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer"
+	                    Version="8.0.0-preview.6.23329.11" />
+
+	  <!-- ASP.NET Core Identity EF Core 스토어 -->
+	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore"
+	                    Version="8.0.0-preview.6.23329.11" />
+
+	  <!-- 내장된 Identity UI (Razor Pages) -->
+	  <PackageReference Include="Microsoft.AspNetCore.Identity.UI"
+	                    Version="8.0.0-preview.6.23329.11" />
+
+	  <!-- 스캐폴딩(Scaffold) 지원 -->
+	  <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design"
+	                    Version="8.0.0-preview.6.23329.11" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,86 @@
+﻿@model List<Microsoft.Graph.Models.User>
+
+@{
+	var search = ViewData["Search"] as string ?? "";
+	var sort = ViewData["Sort"] as string ?? "displayName";
+	var order = Context.Request.Query["order"].ToString() ?? "asc";
+	var nextPageUrl = ViewData["NextPageUrl"] as string;
+
+	string ToggleOrder(string field) => (sort == field && order == "asc") ? "desc" : "asc";
+	string Arrow(string field) => (sort == field) ? (order == "asc" ? " 🔼" : " 🔽") : "";
+}
+
+<h2>사용자 목록</h2>
+
+<form method="get" class="mb-3">
+	<input type="text" name="search" value="@search" placeholder="이름으로 검색" class="form-control d-inline w-50" />
+	<button type="submit" class="btn btn-sm btn-outline-primary">검색</button>
+</form>
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>
+				@if (string.IsNullOrWhiteSpace(search))
+				{
+					<a asp-action="Index"
+					   asp-route-search="@search"
+					   asp-route-sort="displayName"
+					   asp-route-order="@ToggleOrder("displayName")">
+						이름 @Html.Raw(Arrow("displayName"))
+					</a>
+				}
+				else
+				{
+					<text>이름</text>
+				}
+			</th>
+			<th>직급</th>
+			<th>이메일</th>
+		</tr>
+	</thead>
+	<tbody id="user-body">
+		@foreach (var user in Model)
+		{
+			<tr>
+				<td>
+					<a href="#" class="user-detail" data-user-id="@user.Id">
+						@user.DisplayName
+					</a>
+				</td>
+				<td>@user.JobTitle</td>
+				<td>@user.Mail</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@if (!string.IsNullOrEmpty(nextPageUrl))
+{
+	<div class="text-center mt-3">
+		<a class="btn btn-primary"
+		   id="more-btn"
+		   data-next="@nextPageUrl"
+		   data-search="@search"
+		   data-sort="@sort"
+		   data-order="@order">
+			더보기
+		</a>
+	</div>
+}
+
+<!-- 사용자 상세 팝업 -->
+<div id="user-popup">
+	<div class="popup-header">사원 상세 정보</div>
+	<div id="popup-content">
+		<img id="user-photo" src="" alt="프로필 사진" />
+		<div id="user-info">불러오는 중...</div>
+	</div>
+	<div id="popup-close-container">
+		<button id="popup-close">닫기</button>
+	</div>
+</div>
+
+<!-- 외부 CSS / JS -->
+<link href="~/css/user-popup.css" rel="stylesheet" />
+<script src="~/js/user-index.js" asp-append-version="true"></script>

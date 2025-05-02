@@ -1,0 +1,102 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Neoplus.NetCore.WorkLib.Controls
+@using Neoplus.NetCore.WorkLib.Models
+@model ResultData<Order>
+
+<h2>Order List</h2>
+<a class="btn btn-primary" href="@Url.Action("Create", "Orders")">NEW</a>
+
+<!-- 오른쪽 정렬을 위한 컨테이너 -->
+<div class="d-flex justify-content-end mb-3">
+	<form method="get" asp-action="Index" class="form-inline">
+		<div class="input-group">
+			<!-- 드롭다운: 검색 타입 -->
+			<select name="searchType" class="form-select">
+				<option value="ShipName" selected="@(Model.SearchType == "ShipName")">수령인</option>
+				<option value="ShipAddress" selected="@(Model.SearchType == "ShipAddress")">주소</option>
+			</select>
+
+			<!-- 검색어 입력 -->
+			<input type="text" name="searchText" class="form-control" value="@Model.SearchText" placeholder="검색어 입력" />
+
+			<!-- 검색 버튼 -->
+			<button type="submit" class="btn btn-outline-primary">검색</button>
+		</div>
+
+		<!--  hidden 필드 -->
+		<input type="hidden" name="sortColumn" value="@Model.SortColumn" />
+		<input type="hidden" name="sortOrder" value="@Model.SortType.ToString().ToLower()" />
+		<input type="hidden" name="pageNum" value="1" />
+		<input type="hidden" name="pageSize" value="@Model.PageSize" />
+	</form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th >
+                @Html.ActionLink("Order ID", "Index", new { sortColumn = "OrderID", sortOrder = (Model.SortColumn == "OrderID" && Model.SortType == SortType.Asc) ? "desc" : "asc", pageNum = Model.PageNum, pageSize = Model.PageSize })
+            </th>
+            <th>
+                @Html.ActionLink("Order Date", "Index", new { sortColumn = "OrderDate", sortOrder = (Model.SortColumn == "OrderDate" && Model.SortType == SortType.Asc) ? "desc" : "asc", pageNum = Model.PageNum, pageSize = Model.PageSize })
+            </th>
+            <th>
+                @Html.ActionLink("Ship Name", "Index", new { sortColumn = "ShipName", sortOrder = (Model.SortColumn == "ShipName" && Model.SortType == SortType.Asc) ? "desc" : "asc", pageNum = Model.PageNum, pageSize = Model.PageSize })
+            </th>
+            <th>Ship Address</th>
+            <th>
+                @Html.ActionLink("Freight", "Index", new { sortColumn = "Freight", sortOrder = (Model.SortColumn == "Freight" && Model.SortType == SortType.Asc) ? "desc" : "asc", pageNum = Model.PageNum, pageSize = Model.PageSize })
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    @if(Model.Result?.Count==0)
+    {
+	    <tr><td colspan="6">데이터가 없습니다.</td></tr>
+    }
+    @foreach (var order in Model)
+    {
+	    <tr>
+		    <td>@order.OrderID</td>
+		    <td>@order.OrderDate</td>
+		    <td>@order.ShipName</td>
+		    <td>@order.ShipAddress</td>
+		    <td>@order.Freight</td>
+		    <td>
+			    <a asp-action="Edit" asp-route-id="@order.OrderID" class="btn btn-sm btn-warning me-2">수정</a>
+			    <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete(@order.OrderID)">삭제</button>
+
+			    <!-- 삭제 폼 -->
+			    <form id="deleteForm-@order.OrderID" method="post" action="@Url.Action("Delete", "Orders")" style="display: none;">
+				    <input type="hidden" name="id" value="@order.OrderID"/>
+			    </form>
+		    </td>
+	    </tr>
+    }
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="col-12">
+        @NeoHtml.Pager(new PageInfo()
+   {
+       ItemCount = Model.ItemCount,
+       PageNum = Model.PageNum,
+       PageSize = Model.PageSize,
+       SearchType = Model.SearchType,
+       SearchText = Model.SearchText,
+       SortColumn = Model.SortColumn,
+       SortType = Model.SortType
+   })
+    </div>
+</div>
+
+<script>
+    function confirmDelete(orderId) {
+        var result = confirm("정말로 삭제하시겠습니까?");
+        if (result) {
+            document.getElementById('deleteForm-' + orderId).submit();
+        }
+    }
+</script>

@@ -1,0 +1,19 @@
+﻿@model LoginMVC.Models.Post
+
+<h2>🗑️ 게시글 삭제</h2>
+
+<div class="alert alert-danger">정말로 삭제하시겠습니까?</div>
+
+<dl class="row">
+    <dt class="col-sm-2">제목</dt>
+    <dd class="col-sm-10">@Model.Title</dd>
+
+    <dt class="col-sm-2">작성자</dt>
+    <dd class="col-sm-10">@Model.CreatorId</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">삭제</button>
+    <a asp-action="Index" class="btn btn-secondary">취소</a>
+</form>
