@@ -1,0 +1,150 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "솔루션사업부 휴가 일정";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<!-- ✅ FullCalendar CSS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet" />
+
+<!-- ✅ 캘린더 표시 영역 -->
+<div id="calendar" style="max-width: 1600px; margin: 20px auto; height: 1100px; background-color: #f5f5f5;"></div>
+
+<!-- ✅ 일정 상세 팝업 -->
+<div id="event-popup" style="display:none;" class="popup-overlay">
+    <div class="popup-content">
+        <div class="popup-header">📅 일정 상세 정보</div>
+        <div class="popup-body">
+            <p><strong>제목:</strong> <span id="popup-title"></span></p>
+            <p><strong>시작:</strong> <span id="popup-start"></span></p>
+            <p><strong>종료:</strong> <span id="popup-end"></span></p>
+        </div>
+        <div class="popup-footer">
+            <button id="popup-close">닫기</button>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+	<style>
+        /* ✅ 팝업 배경 (오버레이) */
+		.popup-overlay {
+			position: fixed;
+			top: 0; left: 0;
+			width: 100%; height: 100%;
+			background-color: rgba(0, 0, 0, 0.4);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			z-index: 1000;
+		}
+
+		/* ✅ 팝업 본체 */
+		.popup-content {
+			background: white;
+			padding: 30px;
+			border-radius: 12px;
+			width: 600px; /* ✅ 더 넓게 */
+			color: #000;
+			font-size: 18px; /* ✅ 기본 글씨 키움 */
+			box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+		}
+
+		.popup-header {
+			font-weight: bold;
+			font-size: 22px; /* ✅ 제목 크게 */
+			margin-bottom: 20px;
+		}
+
+		.popup-body p {
+			margin: 10px 0;
+			line-height: 1.6;
+		}
+
+		.popup-footer {
+			text-align: right;
+			margin-top: 25px;
+		}
+
+		#popup-close {
+			padding: 8px 16px;
+			font-size: 16px;
+		}
+
+		/* ✅ FullCalendar 일정 스타일 (기존 유지) */
+		.fc-event-title, .fc-event-time {
+			color: #000 !important;
+			font-weight: 600;
+		}
+
+		.fc-event {
+			background-color: #d6e4ff !important;
+			border-radius: 4px !important;
+			padding: 2px 4px;
+			border: none !important;
+		}
+
+		.fc-event:hover {
+			background-color: #b3d4ff !important;
+			cursor: pointer;
+		}
+	</style>
+}
+
+
+@section Scripts {
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log("✅ FullCalendar 스크립트 시작");
+
+            var calendarEl = document.getElementById('calendar');
+            if (!calendarEl) {
+                console.error("❌ calendar DOM이 없습니다");
+                return;
+            }
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'ko',
+                height: '1100',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,listWeek'
+                },
+                eventSources: [
+                    {
+                        url: '/Graph/GetEvents',
+                        method: 'GET',
+                        failure: function () {
+                            console.error('❌ 일정 로딩 실패');
+                        },
+                        success: function (data) {
+                            console.log('📦 불러온 일정 개수:', data.length);
+                        }
+                    }
+                ],
+                eventClick: function (info) {
+                    // 팝업에 값 채우기
+                    document.getElementById("popup-title").innerText = info.event.title;
+                    document.getElementById("popup-start").innerText = info.event.start?.toLocaleString() ?? '';
+                    document.getElementById("popup-end").innerText = info.event.end?.toLocaleString() ?? '';
+
+                    // 팝업 표시
+                    document.getElementById("event-popup").style.display = "flex";
+                }
+            });
+
+            calendar.render();
+
+            // 팝업 닫기
+            document.getElementById("popup-close").addEventListener("click", function () {
+                document.getElementById("event-popup").style.display = "none";
+            });
+        });
+    </script>
+}
