@@ -1,0 +1,137 @@
+﻿@model IEnumerable<dynamic>
+@{
+	ViewData["Title"] = "오늘 받은 메일";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered table-striped">
+	<thead class="table-dark">
+		<tr>
+			<th style="width: 50%;">제목</th>
+			<th style="width: 25%;">보낸 사람</th>
+			<th style="width: 25%;">받은 시각</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var mail in Model)
+		{
+			<tr class="mail-row" data-id="@mail.Id">
+				<td><a href="javascript:void(0);" class="mail-link">@mail.Subject</a></td>
+				<td>@mail.From</td>
+				<td>@mail.Received</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<!-- ✅ 메일 상세 보기 팝업 -->
+<div id="mailModal" class="modal">
+	<div class="modal-content">
+		<span class="close">&times;</span>
+		<h3>📨 메일 상세 정보</h3>
+		<div class="mail-detail">
+			<div><strong>제목:</strong> <span id="mail-subject">불러오는 중...</span></div>
+			<div><strong>보낸 사람:</strong> <span id="mail-from">불러오는 중...</span></div>
+			<hr />
+			<div><strong>본문 내용:</strong></div>
+			<div id="mail-body" class="mail-body">📭 본문을 불러오는 중입니다...</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		document.querySelectorAll(".mail-link").forEach(link => {
+			link.addEventListener("click", async function () {
+				var row = this.closest("tr");
+				var id = row.dataset.id;
+				var subject = row.querySelector("td:nth-child(1)").innerText;
+				var from = row.querySelector("td:nth-child(2)").innerText;
+
+				document.getElementById("mail-subject").textContent = subject;
+				document.getElementById("mail-from").textContent = from;
+				document.getElementById("mail-body").innerHTML = "📭 본문을 불러오는 중입니다...";
+
+				document.getElementById("mailModal").style.display = "block";
+
+				var res = await fetch(`/Mail/GetMailBody?id=${id}`);
+				var text = await res.text();
+				document.getElementById("mail-body").innerHTML = text;
+			});
+		});
+
+		document.querySelector(".close").onclick = function () {
+			document.getElementById("mailModal").style.display = "none";
+		};
+
+		window.onclick = function (event) {
+			var modal = document.getElementById("mailModal");
+			if (event.target === modal) {
+				modal.style.display = "none";
+			}
+		};
+	</script>
+}
+
+@section Styles {
+	<style>
+		.modal {
+			display: none;
+			position: fixed;
+			z-index: 9999;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgba(0, 0, 0, 0.5);
+		}
+
+		.modal-content {
+			background-color: #fff;
+			margin: 8% auto;
+			padding: 25px;
+			border: 1px solid #ccc;
+			width: 40%;
+			max-height: 80%;
+			overflow-y: auto;
+			border-radius: 10px;
+			box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+			font-size: 16px;
+			color: #333;
+		}
+
+		.close {
+			float: right;
+			font-size: 26px;
+			font-weight: bold;
+			color: #888;
+			cursor: pointer;
+		}
+
+			.close:hover {
+				color: #000;
+			}
+
+		.mail-detail div {
+			margin-bottom: 12px;
+			font-size: 17px;
+		}
+
+		.mail-body {
+			padding: 12px;
+			background-color: #f8f8f8;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			white-space: pre-wrap;
+			font-size: 16px;
+		}
+
+		hr {
+			margin: 15px 0;
+			border: 0;
+			border-top: 1px solid #ccc;
+		}
+	</style>
+}
