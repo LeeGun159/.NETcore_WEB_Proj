@@ -5,13 +5,13 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<!--  FullCalendar CSS -->
+<!-- ✅ FullCalendar CSS -->
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet" />
 
-<!--  캘린더 표시 영역 -->
+<!-- ✅ 캘린더 표시 영역 -->
 <div id="calendar" style="max-width: 1600px; margin: 20px auto; height: 1100px; background-color: #f5f5f5;"></div>
 
-<!--  일정 상세 팝업 -->
+<!-- ✅ 일정 상세 팝업 -->
 <div id="event-popup" style="display:none;" class="popup-overlay">
     <div class="popup-content">
         <div class="popup-header">📅 일정 상세 정보</div>
@@ -28,7 +28,7 @@
 
 @section Styles {
 	<style>
-        /*  팝업 배경 (오버레이) */
+        /* ✅ 팝업 배경 (오버레이) */
 		.popup-overlay {
 			position: fixed;
 			top: 0; left: 0;
@@ -40,20 +40,20 @@
 			z-index: 1000;
 		}
 
-		/*  팝업 본체 */
+		/* ✅ 팝업 본체 */
 		.popup-content {
 			background: white;
 			padding: 30px;
 			border-radius: 12px;
-			width: 600px; 
+			width: 600px; /* ✅ 더 넓게 */
 			color: #000;
-			font-size: 18px; 
+			font-size: 18px; /* ✅ 기본 글씨 키움 */
 			box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 		}
 
 		.popup-header {
 			font-weight: bold;
-			font-size: 22px; 
+			font-size: 22px; /* ✅ 제목 크게 */
 			margin-bottom: 20px;
 		}
 
@@ -72,7 +72,7 @@
 			font-size: 16px;
 		}
 
-		
+		/* ✅ FullCalendar 일정 스타일 (기존 유지) */
 		.fc-event-title, .fc-event-time {
 			color: #000 !important;
 			font-weight: 600;
@@ -99,11 +99,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            console.log(" FullCalendar 스크립트 시작");
+            console.log("✅ FullCalendar 스크립트 시작");
 
             var calendarEl = document.getElementById('calendar');
             if (!calendarEl) {
-                console.error(" calendar DOM이 없습니다");
+                console.error("❌ calendar DOM이 없습니다");
                 return;
             }
 
@@ -121,10 +121,10 @@
                         url: '/Graph/GetEvents',
                         method: 'GET',
                         failure: function () {
-                            console.error(' 일정 로딩 실패');
+                            console.error('❌ 일정 로딩 실패');
                         },
                         success: function (data) {
-                            console.log(' 불러온 일정 개수:', data.length);
+                            console.log('📦 불러온 일정 개수:', data.length);
                         }
                     }
                 ],
