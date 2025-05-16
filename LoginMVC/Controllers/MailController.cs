@@ -29,7 +29,7 @@ namespace LoginMVC.Controllers
                 config.QueryParameters.Top = 50;
                 config.QueryParameters.Orderby = new[] { "receivedDateTime desc" };
                 config.QueryParameters.Select = new[] { "subject", "from", "receivedDateTime", "id" };
-                config.Headers.Add("Prefer", "outlook.markAsRead=false"); // ✅ 읽음 상태 유지
+                config.Headers.Add("Prefer", "outlook.markAsRead=false"); //  읽음 상태 유지
             });
 
             var mails = mailResponse?.Value?.Select(m => new
@@ -56,7 +56,7 @@ namespace LoginMVC.Controllers
                 config.QueryParameters.Select = new[] { "body" };
             });
 
-            return Content(mail?.Body?.Content ?? "⚠ 본문 없음", "text/html");
+            return Content(mail?.Body?.Content ?? " 본문 없음", "text/html");
         }
     }
 
