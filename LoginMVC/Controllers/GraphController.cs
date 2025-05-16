@@ -18,14 +18,14 @@ namespace LoginMVC.Controllers
         }
 
 
-        //  View 렌더링용 - HTML 페이지 반환
+        // View 렌더링용 - HTML 페이지 반환
         [Authorize]
         public IActionResult Events()
         {
             return View(); // => Views/Graph/Events.cshtml 렌더링
         }
         
-        //   JSON 데이터 API용 - FullCalendar가 호출
+        //  JSON 데이터 API용 - FullCalendar가 호출
         [HttpGet]
         public async Task<IActionResult> GetEvents()
         {
